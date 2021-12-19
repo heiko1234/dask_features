@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "dask_features"
+version = "0.1.0"
+description = ""
+authors = ["Heiko Kulinna <Heikokulinna@gmx.de>"]
+
+[tool.poetry.dependencies]
+python = ">= 3.8, <3.9"
+pandas = "^1.3.5"
+numpy = "^1.21.4"
+featuretools = "^1.3.0"
+dask = "^2021.12.0"
+plotly = "^5.4.0"
+graphviz = "^0.19.1"
+
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+flake8 = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
