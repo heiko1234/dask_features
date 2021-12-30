@@ -196,3 +196,68 @@ timeneeded   # microseconds=528644   # dask: microseconds=526000
 client.close()
 
 
+
+
+# working with dask dataframes
+
+filenames = [os.path.join("/home/heiko/Repos/dask_features/data",f) for f in listdir("/home/heiko/Repos/dask_features/data")]
+filenames = sorted(filenames)
+filenames
+
+
+
+# import dask
+import dask
+import dask.dataframe as dd
+df = dd.read_csv(filenames)
+df
+
+df.head()
+
+df[df["month"]==1]
+df[df["month"]==12].compute()
+
+
+starttime=datetime.now()
+#df.compute()
+df[df["month"]==1].compute()
+timeneeded = datetime.now()-starttime
+timeneeded   # microseconds=464970
+
+
+df.dep_delay.max().compute()
+
+
+
+
+###
+
+
+starttime=datetime.now()
+
+timeneeded = datetime.now()-starttime
+timeneeded
+
+
+starttime=datetime.now()
+output = []
+
+for f in filenames:
+
+    fn = os.path.join("/home/heiko/Repos/dask_features/data", f)
+    # Read in file
+    # deplayed with dask:
+    df = pd.read_csv(fn)
+    output.append(df)
+
+
+df = pd.concat(output, axis = 0)
+dd = df[df["month"]==1]
+# dd  #27004 x 20
+
+timeneeded = datetime.now()-starttime
+timeneeded  # microseconds=467321
+
+df  # 336776 x 20
+dd
+
