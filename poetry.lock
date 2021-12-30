@@ -259,6 +259,17 @@ optional = false
 python-versions = ">=3.7,<3.11"
 
 [[package]]
+name = "nycflights13"
+version = "0.0.3"
+description = "A data package for nyc flights (the nycflights13 R package)"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+pandas = ">=0.24.0"
+
+[[package]]
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
@@ -555,7 +566,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = ">= 3.8, <3.9"
-content-hash = "fe6f5731ae61adc5f8196ade2989f9c64ed8e26e59ad13ca81536e479f98bf43"
+content-hash = "d65d6923feb7c2820f7186a6f4e96c46328cc4cf71dff6e87f4ecf3f0c377c28"
 
 [metadata.files]
 black = [
@@ -760,6 +771,9 @@ numpy = [
     {file = "numpy-1.21.4-cp39-cp39-win_amd64.whl", hash = "sha256:e3c3e990274444031482a31280bf48674441e0a5b55ddb168f3a6db3e0c38ec8"},
     {file = "numpy-1.21.4-pp37-pypy37_pp73-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:a3deb31bc84f2b42584b8c4001c85d1934dbfb4030827110bc36bfd11509b7bf"},
     {file = "numpy-1.21.4.zip", hash = "sha256:e6c76a87633aa3fa16614b61ccedfae45b91df2767cf097aa9c933932a7ed1e0"},
+]
+nycflights13 = [
+    {file = "nycflights13-0.0.3.tar.gz", hash = "sha256:d9ef2f5cf1bebca7e30b4daf69dcd7a8fd71f25b7196f5dc489879ad7e3e8a37"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},

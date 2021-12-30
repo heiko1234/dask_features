@@ -65,6 +65,9 @@ es = es.add_relationship("products", "product_id", "transactions", "product_id")
 es
 
 
+# check the raw data frame
+transactions_df.iloc[:5,:]
+transactions_df.loc[:10,["device", "customer_id", "zip_code", "session_start", "join_date"]]
 
 es = es.normalize_dataframe(
     base_dataframe_name="transactions",
@@ -100,14 +103,18 @@ es = es.normalize_dataframe(
     additional_columns=["zip_code", "join_date"],
 )
 es
+es["customers"].head(5)
 
 
+# create new features
 
 feature_matrix, feature_defs = ft.dfs(entityset=es, target_dataframe_name="products")
 
 
 feature_defs
 
+feature_matrix
+feature_matrix.columns
 feature_matrix
 
 
@@ -118,8 +125,22 @@ feature_matrix, feature_defs = ft.dfs(entityset=es,
                                       trans_primitives=["month"],
                                       max_depth=1)
 feature_matrix
+es["customers"]
+
+#   customer_id zip_code           join_date
+#5            5    60091 2010-07-17 05:27:50
+#4            4    60091 2011-04-08 20:08:14
+#1            1    60091 2011-04-17 10:48:33
+#3            3    13244 2011-08-13 15:42:34
+#2            2    13244 2012-04-15 23:31:04
 
 
+feature_matrix, feature_defs = ft.dfs(entityset=es,
+                                      target_dataframe_name="customers",
+                                      agg_primitives=["mean", "sum", "mode"],
+                                      trans_primitives=["month", "hour"],
+                                      max_depth=1)
+feature_matrix
 
 
 feature_matrix, feature_defs = ft.dfs(entityset=es,
@@ -130,7 +151,18 @@ feature_matrix, feature_defs = ft.dfs(entityset=es,
 feature_matrix
 
 
+feature_matrix.columns
+es["customers"]
+es
 
+
+# change target to session instead of customers
+feature_matrix, feature_defs = ft.dfs(entityset=es,
+                                      target_dataframe_name="sessions",
+                                      agg_primitives=["mean", "sum", "mode"],
+                                      trans_primitives=["month", "hour"],
+                                      max_depth=2)
+feature_matrix.head(5)
 
 
 
