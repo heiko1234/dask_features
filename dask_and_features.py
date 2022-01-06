@@ -17,6 +17,13 @@ import featuretools as ft
 
 data = ft.demo.load_mock_customer()
 data
+
+data["transactions"]  # 500x4: transaction_id, session_id, transaction_time, product_id, amount
+data["sessions"]   # 34 x 4: session_id, customer_id, device, session_start
+data["customers"]  # 5x 4: customer_id, zip_code, join_date, birthday
+data["products"]  # 5 2: product_id, brand
+
+
 transactions_df = data["transactions"].merge(data["sessions"]).merge(data["customers"])
 transactions_df
 transactions_df.shape # 500,11
@@ -34,6 +41,24 @@ es
 
 
 from woodwork.logical_types import Categorical, PostalCode
+
+import woodwork as ww
+ww.list_semantic_tags()
+
+
+
+#data["transactions"]
+#     transaction_id  session_id    transaction_time product_id  amount
+#0               298           1 2014-01-01 00:00:00          5  127.64
+#1                 2           1 2014-01-01 00:01:05          2  109.48
+
+# transactions_df
+#     transaction_id  session_id    transaction_time product_id  ...       session_start  zip_code           join_date   birthday
+#298             298           1 2014-01-01 00:00:00          5  ... 2014-01-01 00:00:00     13244 2012-04-15 23:31:04 1986-08-18
+
+#list(transactions_df.columns)
+#['transaction_id', 'session_id', 'transaction_time', 'product_id', 'amount', 'customer_id', 
+#'device', 'session_start', 'zip_code', 'join_date', 'birthday']
 
 
 es = es.add_dataframe(
@@ -125,6 +150,10 @@ feature_matrix, feature_defs = ft.dfs(entityset=es,
                                       trans_primitives=["month"],
                                       max_depth=1)
 feature_matrix
+        
+#customer_id     zip_code  COUNT(sessions) MONTH(join_date)                                           
+#        5         60091                6                7
+
 es["customers"]
 
 #   customer_id zip_code           join_date
