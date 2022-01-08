@@ -162,9 +162,9 @@ es
 
 feature_matrix, feature_defs = ft.dfs(entityset=es,
                                       target_dataframe_name="analytic",
-                                      agg_primitives=["count", "mean","min", "max", "sum", "mode", "Trend"],
+                                      agg_primitives=["count", "mean","min", "max", "sum", "mode", "Trend", "Std"],
                                       # trans_primitives=["month"],
-                                      max_depth=3)
+                                      max_depth=2)
 
 
 list(set(es["batch_data"]["batch"]))  #2022005, 2022006, 2022007, 2022008, 2022009, 2022010
@@ -198,23 +198,39 @@ es.add_interesting_values(dataframe_name='batch_data', values=values_dict)
 
 es['batch_data'].ww.columns['step'].metadata
 
+ft.primitives.list_primitives()
+prim_list=ft.primitives.list_primitives()
+
+list(set(prim_list["type"]))
+prim_list[prim_list["type"]=="aggregation"]
+prim_list[prim_list["type"]=="transform"]
+
 feature_matrix, feature_defs = ft.dfs(entityset=es,
                                       target_dataframe_name="analytic",
-                                      agg_primitives=["count", "avg_time_between", "mean","min", "max", "sum", "mode", "Trend"],
-                                      where_primitives=["count", "min", "max", "avg_time_between"],
-                                      trans_primitives=['time_since', "weekday"],
+                                      agg_primitives=["count", "avg_time_between", "time_since_last", "mean","min", "max", "sum", "mode", "Trend",  "Std"],
+                                      where_primitives=["count", "mean", "min", "max", "avg_time_between", "Std",  "time_since_last","Trend"],
+                                      trans_primitives=['time_since', "weekday", "Hour", "rolling_min"],
                                       max_depth=2)
 
 
+len(feature_matrix.columns)
 feature_matrix.columns
 
 es["batch_data"]["time"]  # 2021-10-05 23:24:00
 feature_matrix.head
+feature_matrix = feature_matrix.dropna()
+feature_matrix = feature_matrix.reset_index(drop = True)
+
 i = 2
 feature_matrix.iloc[i:i+5,:5]
 feature_matrix.iloc[i:i+5,5:10]
-feature_matrix.iloc[i:i+5,10:15]
-feature_matrix.iloc[i:i+5,15:20]
+feature_matrix.iloc[i:i+5,10:12]
+feature_matrix.iloc[i:i+5,12:14]
+feature_matrix.iloc[i:i+5,14:16]
+feature_matrix.iloc[i:i+5,16:18]
+feature_matrix.iloc[i:i+5,18:20]
+feature_matrix.iloc[i:i+5,20:22]
+feature_matrix.iloc[i:i+5,40:42]
 
 feature = feature_defs[11]
 ft.describe_feature(feature)
@@ -227,6 +243,9 @@ feature_matrix.corr()["color"].sort_values()
 fig = px.scatter(feature_matrix, y = "color", x = "MAX(batch_data.temp WHERE step = 400)")
 fig = px.scatter(feature_matrix, y = "color", x = "MIN(batch_data.temp WHERE step = 500)")
 fig = px.scatter(feature_matrix, y = "color", x = "AVG_TIME_BETWEEN(batch_data.time)")
+fig = px.scatter(feature_matrix, y = "color", x = "TREND(batch_data.temp, time WHERE step = 400)")
+fig = px.scatter(feature_matrix, y = "color", x = "TREND(batch_data.temp, time WHERE step = 600)")
+fig = px.scatter(feature_matrix, y = "color", x = "TREND(batch_data.ROLLING_MIN(time, temp), time WHERE step = 600)")
 fig.show()
 
 
@@ -234,3 +253,20 @@ es["batch_data"]
 fig = px.scatter(es["batch_data"], y = "temp", x = "index")
 fig = px.scatter(es["batch_data"], y = "step", x = "index")
 fig.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

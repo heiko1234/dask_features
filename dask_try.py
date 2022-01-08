@@ -119,6 +119,7 @@ df = flights
 list(set(flights["month"])) # month in dataset flights: 1..12
 
 
+# here we can split the data set to specific month which get saved :) and later loaded
 for i in list(set(flights["month"])):
     # i = 1
     data = df[df["month"] == i]
