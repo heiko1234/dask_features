@@ -44,6 +44,7 @@ from woodwork.logical_types import Categorical, PostalCode
 
 import woodwork as ww
 ww.list_semantic_tags()
+ww.list_logical_types()
 
 
 
@@ -61,6 +62,23 @@ ww.list_semantic_tags()
 #'device', 'session_start', 'zip_code', 'join_date', 'birthday']
 
 
+data["transactions"] 
+
+es = ft.EntitySet(id="customer_data")
+es
+es = es.add_dataframe(
+    dataframe_name="transactions",
+    dataframe=data["transactions"],
+    index="transaction_id",
+    time_index="transaction_time",
+    logical_types={
+        "product_id": Categorical,
+    },
+)
+es
+es["transactions"]
+
+
 es = es.add_dataframe(
     dataframe_name="transactions",
     dataframe=transactions_df,
@@ -72,7 +90,7 @@ es = es.add_dataframe(
     },
 )
 es
-
+es["transactions"]
 
 es
 es["transactions"].ww.schema
@@ -83,13 +101,19 @@ es = es.add_dataframe(
     dataframe=products_df,
     index="product_id")
 es
-
+es["products"]
 
 
 es = es.add_relationship("products", "product_id", "transactions", "product_id")
 es
+es["transactions"]
+es["products"]
+es["transactions"]["brand"] #not inside
+es["products"]["brand"] #inside
 
 
+transactions_df["brand"] #no
+transactions_df["product_id"] #yes
 # check the raw data frame
 transactions_df.iloc[:5,:]
 transactions_df.loc[:10,["device", "customer_id", "zip_code", "session_start", "join_date"]]
@@ -119,7 +143,9 @@ es["transactions"].head(5)
 
 
 
-
+es["sessions"].head(5)
+es["sessions"].ww.schema
+es["customers"].ww.schema
 es = es.normalize_dataframe(
     base_dataframe_name="sessions",
     new_dataframe_name="customers",
